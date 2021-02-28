@@ -1,0 +1,10 @@
+[Unit]
+Description=TinyHA init
+
+[Service]
+ExecStart=/opt/tinyha/tinyha_init.sh
+Type=oneshot
+RemainAfterExit=yes
+
+[Install]
+WantedBy=multi-user.target

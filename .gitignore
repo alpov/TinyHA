@@ -1,0 +1,8 @@
+/.svn
+/php/.htpasswd
+/php/inc/config.php
+/php/camHi.m3u
+/php/camLo.m3u
+/avr/config.h
+/avr/TinyHA_ePaper/*.bin
+/avr/TinyHA_ePaper_v2/*.bin

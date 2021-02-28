@@ -1,0 +1,10 @@
+[Unit]
+Description=TinyHA ping update
+After=tinyha-init.service
+
+[Service]
+ExecStart=/opt/tinyha/tinyha_pingupdate.sh
+Restart=always
+
+[Install]
+WantedBy=multi-user.target

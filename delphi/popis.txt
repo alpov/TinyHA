@@ -1,0 +1,10 @@
+1=obyvak tlacitko + vst. dvere
+2=pracovna
+3=fr. okno u jidelniho stolu
+4+5=rohove obyvak
+6=fr. okno terasa
+7=kuchyn
+8=terasa velka
+9=terasa mala
+10=fr. okno sever
+11=skupina 3+4+5+6+7

@@ -1,0 +1,9 @@
+del *.b#?
+del *.s#?
+del *.l#?
+del *.erc
+del *.eps
+del *.gbr
+del *.gpi
+del *.dri
+del *.exc

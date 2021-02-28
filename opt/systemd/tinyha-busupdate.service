@@ -1,0 +1,10 @@
+[Unit]
+Description=TinyHA bus update
+After=tinyha-init.service
+
+[Service]
+ExecStart=/opt/tinyha/tinyha_busupdate.sh
+Restart=always
+
+[Install]
+WantedBy=multi-user.target

@@ -1,0 +1,10 @@
+[Unit]
+Description=TinyHA doorbell detect
+After=tinyha-init.service
+
+[Service]
+ExecStart=/opt/tinyha/tinyha_doorbell.sh
+Restart=always
+
+[Install]
+WantedBy=multi-user.target

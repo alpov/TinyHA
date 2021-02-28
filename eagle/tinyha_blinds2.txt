@@ -1,0 +1,29 @@
+Partlist exported from d:/projects/tinyHA/eagle/tinyha_blinds2.sch at 6.4.2018 7:52
+
+Qty Value                 Device             Package     Parts                           Description                
+4   100n                  C-EUC0603K         C0603K      C1, C5, C6, C7                  CAPACITOR, European symbol 
+1   10k                   R-EU_R0603         R0603       R4                              RESISTOR, European symbol  
+2   10u                   C-EUC0805K         C0805K      C8, C9                          CAPACITOR, European symbol 
+1   10u/50V               C-EUC1210K         C1210K      C4                              CAPACITOR, European symbol 
+3   1N4148                DIODE-MICROMELF-W  MICROMELF-W D3, D4, D5                      DIODE                      
+2   1k                    R-EU_0207/10       0207/10     R7, R8                          RESISTOR, European symbol  
+2   1k                    R-EU_R0603         R0603       R5, R6                          RESISTOR, European symbol  
+1   220                   R-EU_R0603         R0603       R10                             RESISTOR, European symbol  
+2   22p                   C-EUC0603K         C0603K      C2, C3                          CAPACITOR, European symbol 
+1   27k                   R-EU_R0603         R0603       R2                              RESISTOR, European symbol  
+2   47n/275VAC X2         C10/5              C10B5       C10, C11                        CAPACITOR                  
+1   4k7                   R-EU_R0603         R0603       R9                              RESISTOR, European symbol  
+1   5k1                   R-EU_R0603         R0603       R3                              RESISTOR, European symbol  
+1   ATMEGA88PA-AU         ATMEGA48/88/168-MU MLF32       IC2                                                        
+2   BC817-40SMD           BC817-40SMD        SOT23-BEC   Q1, Q2                          NPN Transistor             
+1   DJNR5040-150-S        DJNR5040           DJNR5040    L1                                                         
+2   HF49FD                HF49FD             HF49D       K1, K2                                                     
+1   IDC381-8-110          MA08-1-IDC         IDC381-8    SV1                             PIN HEADER                 
+1   ILCX13-FF5F18-16.0000 XTAL-3225          SMD3225     X1                                                         
+1   MCP16301              MCP16301           SOT23-6L    IC1                                                        
+1   P4SMAJ28A             DIODE-DO214AC      DO214AC     D1                              DIODE                      
+2   PC814                 PC814              DIL04       OK3, OK4                        SHARP OPTO COUPLER         
+1   SS14                  DIODE-DO214AC      DO214AC     D2                              DIODE                      
+1   ST485ECDR             MAX481CSA          SO08        IC3                             RS485 TRANSEIVER           
+4   TP230                 TP230              P1-20       TP5, TP6, TP13, TP14                                       
+6   TPB1,27               TPB1,27            B1,27       TP7, TP8, TP9, TP10, TP11, TP12 Test pad                   

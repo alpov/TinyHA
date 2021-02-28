@@ -1,0 +1,13 @@
+[Unit]
+Description=TinyHA Nibe update
+After=tinyha-init.service
+StartLimitIntervalSec=900
+StartLimitBurst=10
+
+[Service]
+ExecStart=/opt/tinyha/tinyha_nibeupdate.sh
+Restart=always
+RestartSec=60
+
+[Install]
+WantedBy=multi-user.target

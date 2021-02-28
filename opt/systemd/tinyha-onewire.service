@@ -1,0 +1,10 @@
+[Unit]
+Description=TinyHA onewire sensors
+After=tinyha-init.service
+
+[Service]
+ExecStart=/opt/tinyha/tinyha_onewire.sh
+Restart=always
+
+[Install]
+WantedBy=multi-user.target

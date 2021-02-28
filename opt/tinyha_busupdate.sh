@@ -1,0 +1,122 @@
+#!/usr/bin/php
+<?php
+
+require '/var/www/html/inc/busComm.php';
+
+$running = true;
+declare(ticks=1);
+function signalHandler($signo)
+{
+    global $running;
+    $running = false;
+}
+pcntl_signal(SIGINT, 'signalHandler');
+
+function getState($filename, $on = "0", $off = "1")
+{
+    $fd = fopen($filename, "r");
+    if (!$fd) {
+        $value = "X";
+    } else {
+        $value = ((fgetc($fd) == '0') ? $on : $off);
+        fclose($fd);
+    }
+    return $value;
+}
+
+$db = new PDO('sqlite:/opt/tinyha/db/tinyha.db') or die("cannot open database");
+$cnt = 0;
+
+while ($running) {
+    $fb = busOpen();
+
+    $value = "";
+
+    foreach (array(1, 2, 3, 6, 7, 8, 9, 10) as &$dev) {
+        $result = busComm($fb, $dev, 50); // GET_STATE
+        if ($result === false) goto next_try;
+        $value = $value . (($result & 0x0001) ? "C" : "O");
+    }
+    $value = $value . "-";
+
+    $value = $value . getState("/opt/tinyha/gpio/I1", "C", "O"); // senzor vrat od garaze
+    $value = $value . getState("/opt/tinyha/gpio/I2", "1", "0"); // zvonek - dummy, resen pres interrupt
+    $value = $value . getState("/opt/tinyha/gpio/I3", "1", "0"); // externi napajeni - dostupnost 230V
+    $value = $value . getState("/opt/tinyha/gpio/I4", "1", "0");
+    $value = $value . getState("/opt/tinyha/gpio/I5", "1", "0");
+    $value = $value . getState("/opt/tinyha/gpio/I6", "1", "0");
+    $value = $value . "-";
+
+    $value = $value . getState("/opt/tinyha/gpio/X1"); // spinac otevirani vrat
+    $value = $value . getState("/opt/tinyha/gpio/X2"); // cerpadlo v garazi
+    $value = $value . getState("/opt/tinyha/gpio/X3"); // zebrik koupelna nahore
+    $value = $value . getState("/opt/tinyha/gpio/X4"); // zebrik koupelna dole
+    $value = $value . getState("/opt/tinyha/gpio/X5"); // venkovni osvetleni
+    $value = $value . getState("/opt/tinyha/gpio/X6"); // blokovani TUV
+    $value = $value . getState("/opt/tinyha/gpio/X7");
+    $value = $value . getState("/opt/tinyha/gpio/O1");
+    $value = $value . getState("/opt/tinyha/gpio/O2");
+
+    $stmt = $db->prepare("UPDATE state SET dt = current_timestamp, val = :reed WHERE what = 101");
+    $stmt->bindValue(':reed', $value);
+    $stmt->execute();
+
+    $stmt = $db->query("SELECT id, filename, filevalue FROM output WHERE dt < datetime('now') ORDER BY dt LIMIT 1");
+    if (($output = $stmt->fetch())) {
+        if (($fd = fopen($output['filename'], "w"))) {
+            fwrite($fd, $output['filevalue']);
+            fclose($fd);
+
+            $stmt = $db->prepare("delete from output where id=:id");
+            $stmt->bindValue(':id', $output['id']);
+            $stmt->execute();
+        }
+    }
+
+    if ($cnt == 0) {
+        $litres = busComm($fb, 20, 12); // GET_LITRES
+        $tank = busComm($fb, 20, 21); // GET_OCCUP
+        $i_u_batt = busComm($fb, 30, 11); // GET_I_U_BATT
+        $i_out_state = busComm($fb, 30, 12); // GET_I_OUT_STATE
+
+        if ($litres !== false && $tank !== false && $i_u_batt !== false && $i_out_state !== false) $cnt = 10;
+
+        if ($litres !== false && $tank !== false) {
+            rrd_update('/opt/tinyha/db/tank2.rrd', array("N:$litres:$tank"));
+
+            // vypnout cerpadlo, pokud retencka poklesne pod 50 litru
+            if ($tank < 50) {
+                $fd = fopen("/opt/tinyha/gpio/X2", "w");
+                fwrite($fd, "0");
+                fclose($fd);
+            }
+        }
+
+        if ($i_u_batt !== false && $i_out_state !== false) {
+            $i_batt = intdiv($i_u_batt, 256);
+            if ($i_batt >= 128) $i_batt = $i_batt - 256;
+            $i_batt = $i_batt * 0.05;
+            $u_batt = ($i_u_batt % 256) * 0.1;
+
+            $i_out = intdiv($i_out_state, 256);
+            if ($i_out >= 128) $i_out = $i_out - 256;
+            $i_out = $i_out * 0.05;
+            $pwr_out = $u_batt * $i_out;
+
+            //echo $i_u_batt."\t".$i_out_state."\n";
+            //echo $i_batt."\t".$u_batt."\t".$i_out."\t".$pwr_out."\n";
+
+            rrd_update('/opt/tinyha/db/power.rrd', array("N:$i_batt:$i_out:$u_batt:$pwr_out"));
+        }
+    } else {
+        $cnt--;
+    }
+
+next_try:
+    busClose($fb);
+    sleep(2);
+}
+
+$db = null;
+
+?>
