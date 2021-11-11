@@ -6,6 +6,8 @@ $config = include('/var/www/html/inc/config.php');
 
 $fd = busOpen();
 busComm($fd, 20, 13); // RESET_FLOW
+busComm($fd, 21, 33); // RESET_VALUE/water
+busComm($fd, 22, 33); // RESET_VALUE/kwh
 busClose($fd);
 
 $db = new PDO('sqlite:/opt/tinyha/db/tinyha.db') or die("cannot open database");

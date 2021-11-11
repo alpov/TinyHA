@@ -34,8 +34,8 @@ while ($running) {
 
     foreach (array(1, 2, 3, 6, 7, 8, 9, 10) as &$dev) {
         $result = busComm($fb, $dev, 50); // GET_STATE
-        if ($result === false) goto next_try;
-        $value = $value . (($result & 0x0001) ? "C" : "O");
+        if ($result === false) goto next_try; // $value = $value . "X";
+        else $value = $value . (($result & 0x0001) ? "C" : "O");
     }
     $value = $value . "-";
 
@@ -76,10 +76,18 @@ while ($running) {
     if ($cnt == 0) {
         $litres = busComm($fb, 20, 12); // GET_LITRES
         $tank = busComm($fb, 20, 21); // GET_OCCUP
+        $water = busComm($fb, 21, 31); // GET_PULSES/water
+        $water_period = busComm($fb, 21, 32); // GET_PPERIOD/water
+        $power = busComm($fb, 22, 31); // GET_PULSES/kwh
+        $power_period = busComm($fb, 22, 32); // GET_PPERIOD/kwh
         $i_u_batt = busComm($fb, 30, 11); // GET_I_U_BATT
         $i_out_state = busComm($fb, 30, 12); // GET_I_OUT_STATE
 
-        if ($litres !== false && $tank !== false && $i_u_batt !== false && $i_out_state !== false) $cnt = 10;
+        if ($litres !== false && $tank !== false && $water !== false && $power !== false &&
+            $i_u_batt !== false && $i_out_state !== false)
+        {
+            $cnt = 10;
+        }
 
         if ($litres !== false && $tank !== false) {
             rrd_update('/opt/tinyha/db/tank2.rrd', array("N:$litres:$tank"));
@@ -90,6 +98,17 @@ while ($running) {
                 fwrite($fd, "0");
                 fclose($fd);
             }
+        }
+
+        if ($water !== false && $power !== false) {
+            $power = $power * 2; // 500 imp/kWh = 2 Wh/imp
+            rrd_update('/opt/tinyha/db/optomeas.rrd', array("N:$water:$power"));
+        }
+
+        if ($water_period !== false && $power_period !== false) {
+            $water2 = ($water_period == 65535) ? 0 : (60000.0 / $water_period); // 1 ms per 1 liter => l/min
+            $power2 = ($power_period == 65535) ? 0 : (7200000.0 / $power_period); // 1 ms per 2 Wh => W
+            rrd_update('/opt/tinyha/db/optomeas2.rrd', array("N:$water2:$power2"));
         }
 
         if ($i_u_batt !== false && $i_out_state !== false) {

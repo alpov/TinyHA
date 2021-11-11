@@ -22,6 +22,24 @@ if ($data === FALSE || time() - $data['last_update'] > 600) {
         sprintf('%d%%', $data['data'][2]));
 }
 
-echo implode(",", $ds18b20) . "," . implode(",", $sht30);
+$data = rrd_lastupdate('/opt/tinyha/db/optomeas.rrd');
+if ($data === FALSE || time() - $data['last_update'] > 600) {
+    $optomeas = array(0=>'Chyba', 1=>'Chyba');
+} else {
+    $optomeas = array(
+        sprintf('%d l', $data['data'][0]),
+        sprintf('%.3f kWh', $data['data'][1]/1000));
+}
+
+$data = rrd_lastupdate('/opt/tinyha/db/optomeas2.rrd');
+if ($data === FALSE || time() - $data['last_update'] > 600) {
+    $optomeas2 = array(0=>'Chyba', 1=>'Chyba');
+} else {
+    $optomeas2 = array(
+        sprintf('%.2f l/min', $data['data'][0]),
+        sprintf('%.0f W', $data['data'][1]));
+}
+
+echo implode(",", $ds18b20) . "," . implode(",", $sht30) . "," . implode(",", $optomeas) . "," . implode(",", $optomeas2);
 
 ?>

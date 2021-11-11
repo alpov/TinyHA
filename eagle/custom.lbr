@@ -6,7 +6,7 @@
 <setting alwaysvectorfont="no"/>
 <setting verticaltext="up"/>
 </settings>
-<grid distance="1" unitdist="mm" unit="mm" style="lines" multiple="1" display="yes" altdistance="0.025" altunitdist="inch" altunit="inch"/>
+<grid distance="0.05" unitdist="inch" unit="mm" style="lines" multiple="1" display="yes" altdistance="0.025" altunitdist="inch" altunit="inch"/>
 <layers>
 <layer number="1" name="Top" color="4" fill="1" visible="yes" active="yes"/>
 <layer number="2" name="Route2" color="1" fill="3" visible="no" active="yes"/>
@@ -475,6 +475,33 @@ Source: &lt;a href="http://pewa.panasonic.com/assets/pcsd/catalog/pf-catalog.pdf
 <wire x1="20.9075" y1="-2.2225" x2="20.9075" y2="15.24" width="0.127" layer="21"/>
 <text x="2.54" y="2.54" size="1.27" layer="25">&gt;NAME</text>
 <text x="2.54" y="0" size="1.27" layer="27">&gt;VALUE</text>
+</package>
+<package name="V23079D">
+<smd name="1" x="-6.35" y="-4" dx="2.85" dy="1.3" layer="1" rot="R90"/>
+<smd name="3" x="-1.27" y="-4" dx="2.85" dy="1.3" layer="1" rot="R90"/>
+<smd name="4" x="1.27" y="-4" dx="2.85" dy="1.3" layer="1" rot="R90"/>
+<smd name="5" x="3.81" y="-4" dx="2.85" dy="1.3" layer="1" rot="R90"/>
+<smd name="12" x="-6.35" y="4" dx="2.85" dy="1.3" layer="1" rot="R90"/>
+<smd name="10" x="-1.27" y="4" dx="2.85" dy="1.3" layer="1" rot="R90"/>
+<smd name="9" x="1.27" y="4" dx="2.85" dy="1.3" layer="1" rot="R90"/>
+<smd name="8" x="3.81" y="4" dx="2.85" dy="1.3" layer="1" rot="R90"/>
+<wire x1="-7.3" y1="-3.6" x2="0" y2="-3.6" width="0.127" layer="21"/>
+<wire x1="0" y1="-3.6" x2="7.3" y2="-3.6" width="0.127" layer="21"/>
+<wire x1="-7.3" y1="3.6" x2="0" y2="3.6" width="0.127" layer="21"/>
+<wire x1="0" y1="3.6" x2="7.3" y2="3.6" width="0.127" layer="21"/>
+<wire x1="-7.3" y1="3.6" x2="-7.3" y2="-3.6" width="0.127" layer="21"/>
+<wire x1="7.3" y1="3.6" x2="7.3" y2="-3.6" width="0.127" layer="21"/>
+<rectangle x1="-6.35" y1="-1.27" x2="-5.08" y2="1.27" layer="21"/>
+<rectangle x1="-6.6675" y1="3.65125" x2="-6.0325" y2="5.08" layer="21"/>
+<rectangle x1="-1.5875" y1="3.65125" x2="-0.9525" y2="5.08" layer="21"/>
+<rectangle x1="0.9525" y1="3.65125" x2="1.5875" y2="5.08" layer="21"/>
+<rectangle x1="3.4925" y1="3.65125" x2="4.1275" y2="5.08" layer="21"/>
+<rectangle x1="-6.6675" y1="-5.08" x2="-6.0325" y2="-3.65125" layer="21" rot="R180"/>
+<rectangle x1="-1.5875" y1="-5.08" x2="-0.9525" y2="-3.65125" layer="21" rot="R180"/>
+<rectangle x1="0.9525" y1="-5.08" x2="1.5875" y2="-3.65125" layer="21" rot="R180"/>
+<rectangle x1="3.4925" y1="-5.08" x2="4.1275" y2="-3.65125" layer="21" rot="R180"/>
+<text x="-3.81" y="-1.27" size="1.27" layer="27">&gt;VALUE</text>
+<text x="-3.81" y="0.635" size="1.27" layer="25">&gt;NAME</text>
 </package>
 </packages>
 <symbols>
@@ -988,6 +1015,30 @@ Source: &lt;a href="http://pewa.panasonic.com/assets/pcsd/catalog/pf-catalog.pdf
 <connect gate="G$1" pin="IN-" pad="VIN-"/>
 <connect gate="G$1" pin="OUT+" pad="VOUT+"/>
 <connect gate="G$1" pin="OUT-" pad="VOUT-"/>
+</connects>
+<technologies>
+<technology name=""/>
+</technologies>
+</device>
+</devices>
+</deviceset>
+<deviceset name="V23079" prefix="K">
+<gates>
+<gate name="G$1" symbol="K" x="0" y="0" addlevel="must"/>
+<gate name="G$2" symbol="U" x="20.32" y="-2.54"/>
+<gate name="G$3" symbol="U" x="38.1" y="-2.54"/>
+</gates>
+<devices>
+<device name="D2001B301" package="V23079D">
+<connects>
+<connect gate="G$1" pin="1" pad="1"/>
+<connect gate="G$1" pin="2" pad="12"/>
+<connect gate="G$2" pin="O" pad="3"/>
+<connect gate="G$2" pin="P" pad="4"/>
+<connect gate="G$2" pin="S" pad="5"/>
+<connect gate="G$3" pin="O" pad="10"/>
+<connect gate="G$3" pin="P" pad="9"/>
+<connect gate="G$3" pin="S" pad="8"/>
 </connects>
 <technologies>
 <technology name=""/>

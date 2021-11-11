@@ -1,40 +1,37 @@
 <?php
 
+//error_reporting(E_ALL);
+include(ini_get('extension_dir') . '/wiringpi.php');
+
 function busOpen()
 {
-    $fb = dio_open('/dev/ttyS0', O_RDWR | O_NOCTTY | O_NONBLOCK) or die("cannot open RS485");
-
-    dio_tcsetattr($fb, array(
-        'baud' => 19200,
-        'bits' => 8,
-        'stop' => 1,
-        'parity' => 0
-    ));
-
+    $fb = wiringpi::serialOpen('/dev/ttyS0', 19200);
+    if ($fb == -1) die("cannot open RS485");
     return $fb;
 }
 
 function busClose($fb)
 {
-    dio_close($fb);
+    wiringpi::serialClose($fb);
 }
 
 function busCommInternal($fb, $dev, $cmd, $val = 1, $debug = false)
 {
-//    $sem = sem_get(8000, 1, 0666, false);
-
     $xor = $dev ^ $cmd ^ ($val >> 8) ^ ($val & 0xFF);
     $request = pack("CCnC", $dev, $cmd, $val, $xor);
 
-//    sem_acquire($sem);
-    dio_write($fb, $request, 5);
+//    wiringPi::serialFlush($fb);
+    for ($i = 0; $i < 5; $i++) wiringpi::serialPutchar($fb, $request[$i]);
+    for ($i = 0; $i < 5; $i++) echo ord($request[$i]).",";
     if ($debug) echo "Sent to #" . $dev . ", command: " . array_shift(unpack("H*", $request)) . "\n\n";
-    usleep(10000); // 7000
-    $response = dio_read($fb, 5);
+    usleep(500000); // 7000
+    if ($debug) echo "Data avail: " . wiringpi::serialDataAvail($fb) . "\n\n";
+//    if (wiringpi::serialDataAvail($fb) != 5) return false;
+    $response = "     ";
+    for ($i = 0; $i < 5; $i++) $response[$i] = wiringpi::serialGetchar($fb);
     if ($debug) echo "Response: " . array_shift(unpack("H*", $response)) . "\n";
-//    sem_release($sem);
 
-    if (strlen($response) != 5) return false;
+//    if (strlen($response) != 5) return false;
 
     $arr = unpack("C1dev/C1cmd/n1value/Ccrc", $response);
     $resp_dev = $arr['dev'];
@@ -58,6 +55,9 @@ function busCommInternal($fb, $dev, $cmd, $val = 1, $debug = false)
 
 function busComm($fb, $dev, $cmd, $val = 1, $debug = false)
 {
+    return busCommInternal($fb, $dev, $cmd, $val, $debug);
+/*
+
     $retry = 3;
 
     while ($retry != 0) {
@@ -70,6 +70,7 @@ function busComm($fb, $dev, $cmd, $val = 1, $debug = false)
     }
 
     return false;
+*/
 }
 
 ?>

@@ -22,7 +22,7 @@
         <a href="cam.php?cam=3" class="btn btn-success">Garáž</a>
         <a href="graphs/" class="btn btn-primary">RRD grafy</a>
 
-        <h3>Napájení <span class="badge btn-danger" id="power-i-batt"></span>
+        <h3>Systém   <span class="badge btn-danger" id="power-i-batt"></span>
                      <span class="badge btn-success" id="power-i-out"></span>
                      <span class="badge btn-success" id="power-u-batt"></span>
                      <span class="badge btn-info" id="power-pwr-out"></span></h3>
@@ -31,12 +31,18 @@
                   <span class="badge btn-warning" id="temp-T3"></span>
                   <button type="button" class="btn btn-danger" id="garage-updn" href="#">Vrata garáže</button></h3>
 
+        <h3>Elektroměr <span class="badge btn-info" id="kwh"></span>
+                       <span class="badge btn-warning" id="kwh2"></span></h3>
+
+        <h3>Voda     <span class="badge btn-info" id="water"></span>
+                     <span class="badge btn-warning" id="water2"></span></h3>
+
         <h3>Čerpadlo <span class="badge" id="pump-pwr"></span>
                      <span class="badge btn-warning" id="pump-litres"></span>
                      <span class="badge btn-info" id="pump-dist"></span>
                   <button type="button" class="btn btn-danger" id="pump-on-off" href="#">Čerpadlo</button></h3>
 
-        <h3>Ohřev TUV <span class="badge" id="water-block"></span>
+        <h3>Blokování TUV <span class="badge" id="water-block"></span>
                   <button type="button" class="btn btn-danger" id="water-block-on" href="#">Zablokovat</button>
                   <button type="button" class="btn btn-danger" id="water-block-off" href="#">Odblokovat</button></h3>
 
@@ -134,14 +140,14 @@ echo empty($doorbell) ? "N/A" : implode("<br>", $doorbell);
 ?>
 	</pre>
 
-        <h3>Záznam událostí za poslední den</h3>
+        <h3>Záznam (20) událostí za poslední den</h3>
 	<pre>
 <?php
 
 $stmt = $db->query(
     "select strftime('%d.%m. %H:%M:%S', dt, 'localtime') || ' -> ' || val from log".
     " where what = 201 and dt > datetime('now', '-1 days')".
-    " order by id asc");
+    " order by id desc limit 20");
 
 $reed = $stmt->fetchAll(PDO::FETCH_COLUMN, 0);
 
@@ -272,7 +278,7 @@ $db = null;
 
         function updateTemps() {
             $.get("dbGetMeas.php", function(data, status) {
-                if (status != "success") data = "Chyba,Chyba,Chyba,Chyba,Chyba,Chyba,Chyba,Chyba";
+                if (status != "success") data = "Chyba,Chyba,Chyba,Chyba,Chyba,Chyba,Chyba,Chyba,Chyba,Chyba";
                 val = data.split(",");
                 document.getElementById("temp-T1").innerHTML = val[0];
                 document.getElementById("temp-T2").innerHTML = val[1];
@@ -281,6 +287,10 @@ $db = null;
                 document.getElementById("sht-t").innerHTML = val[5];
                 document.getElementById("sht-co2").innerHTML = val[6];
                 document.getElementById("sht-hum").innerHTML = val[7];
+                document.getElementById("water").innerHTML = val[8];
+                document.getElementById("kwh").innerHTML = val[9];
+                document.getElementById("water2").innerHTML = val[10];
+                document.getElementById("kwh2").innerHTML = val[11];
             }).fail(function(data, textStatus, xhr) {
                 document.getElementById("temp-T1").innerHTML = "Chyba";
                 document.getElementById("temp-T2").innerHTML = "Chyba";
@@ -289,6 +299,10 @@ $db = null;
                 document.getElementById("sht-t").innerHTML = "Chyba";
                 document.getElementById("sht-co2").innerHTML = "Chyba";
                 document.getElementById("sht-hum").innerHTML = "Chyba";
+                document.getElementById("water").innerHTML = "Chyba";
+                document.getElementById("kwh").innerHTML = "Chyba";
+                document.getElementById("water2").innerHTML = "Chyba";
+                document.getElementById("kwh2").innerHTML = "Chyba";
             });
             setTimeout(updateTemps, 10000);
         }

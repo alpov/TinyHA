@@ -70,6 +70,16 @@ rrdtool create nibe3.rrd --step 1m \
     DS:BT63:GAUGE:5m:-40:100 \
     RRA:AVERAGE:0.5:1m:5d RRA:AVERAGE:0.5:1h:1y
 
+rrdtool create optomeas.rrd --step 1m \
+    DS:water:GAUGE:5m:0:1000000 \
+    DS:power:GAUGE:5m:0:1000000 \
+    RRA:AVERAGE:0.5:1m:5d RRA:AVERAGE:0.5:1h:1y RRA:MAX:0.5:1d:1y
+
+rrdtool create optomeas2.rrd --step 1m \
+    DS:water:GAUGE:5m:0:1000000 \
+    DS:power:GAUGE:5m:0:1000000 \
+    RRA:AVERAGE:0.5:1m:5d RRA:AVERAGE:0.5:1h:1y RRA:MAX:0.5:1d:1y
+
 
 -- NOVA VERZE
 

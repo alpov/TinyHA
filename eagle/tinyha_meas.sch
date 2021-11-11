@@ -1,6 +1,6 @@
 <?xml version="1.0" encoding="utf-8"?>
 <!DOCTYPE eagle SYSTEM "eagle.dtd">
-<eagle version="7.7.0">
+<eagle version="7.5.0">
 <drawing>
 <settings>
 <setting alwaysvectorfont="no"/>
@@ -8294,10 +8294,15 @@ Source: http://www.diodes.com/datasheets/ds23001.pdf</description>
 <sheets>
 <sheet>
 <plain>
-<text x="249.174" y="156.972" size="1.4224" layer="96">SFH229 C</text>
-<text x="249.174" y="154.432" size="1.4224" layer="96">SFH229 A</text>
-<text x="249.174" y="151.892" size="1.4224" layer="96">LED A</text>
-<text x="249.174" y="149.352" size="1.4224" layer="96">LED C</text>
+<text x="249.174" y="151.892" size="1.4224" layer="96">SFH229 C</text>
+<text x="249.174" y="149.352" size="1.4224" layer="96">SFH229 A</text>
+<text x="249.174" y="156.972" size="1.4224" layer="96">LED A</text>
+<text x="249.174" y="154.432" size="1.4224" layer="96">LED C</text>
+<text x="261.62" y="149.86" size="1.6764" layer="96">TCRT5000L
+LED-A
+LED-C
+T-C
+T-E</text>
 </plain>
 <instances>
 <instance part="FRAME1" gate="G$1" x="0" y="0"/>
@@ -8864,4 +8869,10 @@ Source: http://www.diodes.com/datasheets/ds23001.pdf</description>
 </sheets>
 </schematic>
 </drawing>
+<compatibility>
+<note version="6.3" minversion="6.2.2" severity="warning">
+Since Version 6.2.2 text objects can contain more than one line,
+which will not be processed correctly with this version.
+</note>
+</compatibility>
 </eagle>

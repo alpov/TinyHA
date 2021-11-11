@@ -31,10 +31,10 @@ rrdtool graph nibe_heat2.png -w 785 -h 220 -a PNG --slope-mode --start -3d --end
     DEF:BT25=/opt/tinyha/db/nibe.rrd:BT25:AVERAGE LINE1:BT25#FF0000:"BT25 external flow temp." \
     DEF:BT71=/opt/tinyha/db/nibe.rrd:BT71:AVERAGE LINE1:BT71#00FF00:"BT71 external return temp."
 
-rrdtool graph nibe_heat2b.png -w 785 -h 220 -a PNG --slope-mode --start -12h --end now  --vertical-label "temperature [°C]" \
-    --lower-limit 20 --upper-limit 35 --rigid \
-    DEF:BT25=/opt/tinyha/db/nibe.rrd:BT25:AVERAGE LINE1:BT25#FF0000:"BT25 external flow temp." \
-    DEF:BT71=/opt/tinyha/db/nibe.rrd:BT71:AVERAGE LINE1:BT71#0000FF:"BT71 external return temp."
+#rrdtool graph nibe_heat2b.png -w 785 -h 220 -a PNG --slope-mode --start -12h --end now  --vertical-label "temperature [°C]" \
+#    --lower-limit 20 --upper-limit 35 --rigid \
+#    DEF:BT25=/opt/tinyha/db/nibe.rrd:BT25:AVERAGE LINE1:BT25#FF0000:"BT25 external flow temp." \
+#    DEF:BT71=/opt/tinyha/db/nibe.rrd:BT71:AVERAGE LINE1:BT71#0000FF:"BT71 external return temp."
 
 rrdtool graph nibe_heat3.png -w 785 -h 220 -a PNG --slope-mode --start -3d --end now  --vertical-label "temperature [°C]" \
     DEF:BT14=/opt/tinyha/db/nibe3.rrd:BT14:AVERAGE LINE1:BT14#0000FF:"EB101-BT14 hot gas" \
@@ -66,3 +66,16 @@ rrdtool graph power_w.png -w 785 -h 220 -a PNG --slope-mode --start -3d --end no
 rrdtool graph tank.png -w 785 -h 220 -a PNG --slope-mode --start -3d --end now  --vertical-label "litres [l]" \
     DEF:litres=/opt/tinyha/db/tank2.rrd:litres:AVERAGE LINE1:litres#0000FF:"water consumption" \
     DEF:dist=/opt/tinyha/db/tank2.rrd:tank:AVERAGE LINE1:dist#FF0000:"capacity"
+
+rrdtool graph water.png -w 785 -h 220 -a PNG --slope-mode --start -3d --end now  --vertical-label "water litres [l]" \
+    DEF:water=/opt/tinyha/db/optomeas.rrd:water:AVERAGE LINE1:water#0000FF
+
+rrdtool graph power.png -w 785 -h 220 -a PNG --slope-mode --start -3d --end now  --vertical-label "power [Wh]" \
+    DEF:power=/opt/tinyha/db/optomeas.rrd:power:AVERAGE LINE1:power#0000FF
+
+rrdtool graph water2.png -w 785 -h 220 -a PNG --slope-mode --start -3d --end now  --vertical-label "water litres [l/min]" \
+    DEF:water=/opt/tinyha/db/optomeas2.rrd:water:AVERAGE LINE1:water#0000FF
+
+rrdtool graph power2.png -w 785 -h 220 -a PNG --slope-mode --start -3d --end now  --vertical-label "power [W]" \
+    DEF:power=/opt/tinyha/db/optomeas2.rrd:power:AVERAGE LINE1:power#0000FF
+
